@@ -441,11 +441,15 @@ dbGetQuery(conn, &quot;SELECT DISTINCT GEO FROM FARM_PRICES&quot;)</code></pre>
 ## 2 Saskatchewan</code></pre>
 <pre class="r"><code># Problème 5 : Combien d&#39;hectares de seigle ont été récoltés au Canada en 1968 ?
 # Note : Nous filtrons sur la géographie &#39;Canada&#39; et le type de culture &#39;Rye&#39;
-dbGetQuery(conn, &quot;SELECT SUM(Harvested_area) AS Hectares_Seigle_1968 
-                  FROM CROP_DATA 
-                  WHERE Crop_type = &#39;Rye&#39; AND GEO = &#39;Canada&#39; AND Year = 1968&quot;)</code></pre>
+dbGetQuery(conn, &quot;
+  SELECT SUM(HARVESTED_AREA) AS Hectares_Seigle_1968 
+  FROM CROP_DATA 
+  WHERE CROP_TYPE = &#39;Rye&#39; 
+    AND GEO = &#39;Canada&#39; 
+    AND substr(YEAR, 1, 4) = &#39;1968&#39;
+&quot;)</code></pre>
 <pre><code>##   Hectares_Seigle_1968
-## 1                   NA</code></pre>
+## 1               274100</code></pre>
 <pre class="r"><code># Problème 6 : Interroger et afficher les 6 premières lignes du tableau des prix pour le seigle
 dbGetQuery(conn, &quot;SELECT * FROM FARM_PRICES WHERE Crop_type = &#39;Rye&#39; LIMIT 6&quot;)</code></pre>
 <pre><code>##   CD_ID       DATE CROP_TYPE          GEO PRICE_PRERMT
